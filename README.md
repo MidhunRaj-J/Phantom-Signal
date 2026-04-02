@@ -4,7 +4,7 @@ PhantomSignal is a software-only MVP for decentralized signal intelligence. It s
 
 ## Executive Summary
 
-PhantomSignal demonstrates an end-to-end architecture rather than an isolated model demo.
+PhantomSignal demonstrates an end-to-end system architecture rather than an isolated model demo.
 
 - Signal-level simulation: realistic noisy streams plus controlled threat injection.
 - Edge AI: local unsupervised inference using reconstruction error.
@@ -154,11 +154,11 @@ py -3 -m src.swarm_node.node --node Alpha --stream-port 8765 --backend-url http:
 ## Troubleshooting
 
 - Port `8000` already in use:
-	Start backend once, or change backend port and update orchestrator/frontend target URL.
+  Start backend once, or change backend port and update orchestrator/frontend target URL.
 - `npm run dev` fails from repository root:
-	Run it from `frontend/`.
+  Run it from `frontend/`.
 - Port `3000` already in use:
-	Next.js may move to `3001`; open the URL printed by the dev server.
+  Next.js may move to `3001`; open the URL printed by the dev server.
 
 ## Validation Status
 
