@@ -3,3 +3,6 @@ scipy
 matplotlib
 torch
 scikit-learn
+httpx
+fastapi
+uvicorn
