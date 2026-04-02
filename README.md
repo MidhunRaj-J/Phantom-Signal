@@ -48,7 +48,56 @@ The current build adds the pieces needed to turn the concept into a coherent dem
 
 - `backend/` - FastAPI app, signal generator, detector, gossip transport, and node runtime.
 - `frontend/` - Next.js dashboard with live charts and node status.
+- `data/` - optional captured stream chunks for model training datasets.
+- `src/signal_engine/` - Phase 1 generator and live stream server.
+- `src/edge_ai/` - Phase 1.5 edge stream consumer stub.
+- `src/swarm_node/` - reserved for standalone swarm-node runtime evolution.
+- `src/c2_dashboard/` - reserved for dashboard adapters outside Next.js.
 - `.github/copilot-instructions.md` - workspace instructions used for future Copilot work.
+
+## Phase 1 Signal Engine (Standalone)
+
+Install the lean root dependencies used by the standalone `src/` workflow:
+
+```powershell
+py -3 -m pip install -r requirements.txt
+```
+
+Run the baseline generator visualization:
+
+```powershell
+py -3 src\signal_engine\generator.py
+```
+
+Run the live synthetic stream server (recommended path for real-time simulation):
+
+```powershell
+py -3 -m src.signal_engine.stream_server --host 127.0.0.1 --port 8765 --frame-hz 8 --anomaly-rate 0.16
+```
+
+Optional capture mode for training datasets (chunked `npz`):
+
+```powershell
+py -3 -m src.signal_engine.stream_server --record-dir data --record-mode npz --record-chunk-size 256
+```
+
+Optional parquet mode (falls back to `npz` if parquet dependencies are unavailable):
+
+```powershell
+py -3 -m src.signal_engine.stream_server --record-dir data --record-mode parquet
+```
+
+Consume the live stream with the edge AI stub:
+
+```powershell
+py -3 -m src.edge_ai.stream_client --host 127.0.0.1 --port 8765
+```
+
+Consume a bounded sample for a quick smoke test:
+
+```powershell
+py -3 -m src.edge_ai.stream_client --port 8765 --max-frames 25
+```
 
 ## Backend
 
@@ -102,6 +151,8 @@ If the API is not running at `http://127.0.0.1:8000`, set `NEXT_PUBLIC_BACKEND_U
 - Broadcasts alert payloads between nodes with a lightweight JSON gossip message.
 - Keeps a rolling history of scores and alerts for dashboard visualization.
 - Presents node health as healthy, alert, or offline depending on recent telemetry.
+- Streams newline-delimited JSON frames over TCP for real-time edge simulation.
+- Supports optional chunked dataset capture while streaming for later model training.
 
 ## Development Notes
 
